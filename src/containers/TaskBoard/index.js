@@ -1,40 +1,29 @@
 import React, {Component} from "react";
-import {withStyles} from "@material-ui/core";
-import Styles from "./Styles";
+import {Box, withStyles} from "@material-ui/core";
+import {bindActionCreators} from "redux";
+import * as taskActions from "../../actions/task";
+import TaskList from "../../components/TaskList";
+import TaskForm from "../../components/TaskForm";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
 import {STATUSES} from "../../constants";
-import TaskList from "../../components/TaskList";
-import TaskForm from "../../components/TaskForm";
-
-const listTask = [
-    {
-        id: 0,
-        title: "Read Book",
-        description: "Ready",
-        status: 0
-    },
-    {
-        id: 1,
-        title: "Play Game",
-        description: "In Progress",
-        status: 1
-    },
-    {
-        id: 3,
-        title: "Play Football",
-        description: "Completed",
-        status: 2
-    }
-];
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
+import Styles from "./Styles";
 
 class TaskBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open : false
+            open: false
         };
+    };
+
+    componentDidMount() {
+        const { taskActionCreators } = this.props;
+        const { fetchListTaskRepuest } = taskActionCreators;
+        fetchListTaskRepuest();
     };
 
     openForm = () => {
@@ -51,9 +40,9 @@ class TaskBoard extends Component {
 
     renderBoard = () => {
         let result = null;
-        const {classes} = this.props;
+        const {classes, listTask} = this.props;
         result = (
-            <Grid className={classes.root} container spacing={3} >
+            <Grid className={classes.root} container spacing={3}>
                 {
                     STATUSES.map((status) => {
                         const taskFiltered = listTask.filter(task => task.status === status.value);
@@ -94,7 +83,30 @@ class TaskBoard extends Component {
                 {this.renderForm()}
             </div>
         );
-    }
+    };
 }
 
-export default withStyles(Styles)(TaskBoard);
+TaskBoard.propType = {
+    classes: PropTypes.object,
+    taskActionCreators: PropTypes.shape({
+        fetchListTaskRepuest: PropTypes.func,
+    }),
+    listTask: PropTypes.array
+};
+
+const mapStateToProps = (state) => {
+    return {
+      listTask: state.task.listTask
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        taskActionCreators: bindActionCreators(taskActions, dispatch)
+    };
+};
+
+
+export default withStyles(Styles)(
+    connect(mapStateToProps, mapDispatchToProps)(TaskBoard)
+);
