@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const theme = createMuiTheme({
     color: {
@@ -17,6 +17,6 @@ const theme = createMuiTheme({
         borderColor: "#CCCCCC",
         padding: "10px 20px",
     }
-})
+});
 
 export default theme;
