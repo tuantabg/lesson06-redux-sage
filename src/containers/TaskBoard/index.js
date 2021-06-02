@@ -4,6 +4,7 @@ import {bindActionCreators} from "redux";
 import * as taskActions from "../../actions/task";
 import TaskList from "../../components/TaskList";
 import TaskForm from "../../components/TaskForm";
+import SearchBox from "../../components/SearchBox";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +12,7 @@ import {STATUSES} from "../../constants";
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import Styles from "./Styles";
+
 
 class TaskBoard extends Component {
     constructor(props) {
@@ -20,11 +22,11 @@ class TaskBoard extends Component {
         };
     };
 
-    componentDidMount() {
-        const { taskActionCreators } = this.props;
-        const { fetchListTaskRepuest } = taskActionCreators;
-        fetchListTaskRepuest();
-    };
+    // componentDidMount() {
+    //     const { taskActionCreators } = this.props;
+    //     const { fetchListTask } = taskActionCreators;
+    //     fetchListTask();
+    // };
 
     openForm = () => {
         this.setState({
@@ -41,6 +43,7 @@ class TaskBoard extends Component {
     renderBoard = () => {
         let result = null;
         const {classes, listTask} = this.props;
+
         result = (
             <Grid className={classes.root} container spacing={3}>
                 {
@@ -54,6 +57,7 @@ class TaskBoard extends Component {
                 }
             </Grid>
         );
+
         return result;
     };
 
@@ -68,17 +72,41 @@ class TaskBoard extends Component {
         return result;
     };
 
+    loadData = () => {
+        const { taskActionCreators } = this.props;
+        const { fetchListTask } = taskActionCreators;
+        fetchListTask();
+    };
+
+    handleChadle = (event) => {
+        const {value} = event.target;
+        const { taskActionCreators } = this.props;
+        const { filterTask } = taskActionCreators;
+        filterTask(value);
+    };
+
+    renderSearchBox = () => {
+        let xhtml = null;
+        xhtml = (
+            <SearchBox handleChadle={this.handleChadle}/>
+        );
+        return xhtml;
+    };
+
+
     render() {
         const {classes} = this.props;
 
         return (
             <div className={classes.taskBoard}>
-                <Button variant="contained" color="primary"
-                        classes="classes.button"
-                        onClick={this.openForm}
-                > <AddIcon /> Thêm mới công việc
+                <Button variant="contained" color="secondary" onClick={this.loadData} style={{margin: 20}}>
+                    Load data
                 </Button>
 
+                <Button variant="contained" color="primary" onClick={this.openForm} style={{margin: 20}}>
+                    <AddIcon /> Thêm mới công việc
+                </Button>
+                {this.renderSearchBox()}
                 {this.renderBoard()}
                 {this.renderForm()}
             </div>
@@ -89,7 +117,8 @@ class TaskBoard extends Component {
 TaskBoard.propType = {
     classes: PropTypes.object,
     taskActionCreators: PropTypes.shape({
-        fetchListTaskRepuest: PropTypes.func,
+        fetchListTask: PropTypes.func,
+        filterTask: PropTypes.func,
     }),
     listTask: PropTypes.array
 };

@@ -7,20 +7,38 @@ export const fetchListTask = () => {
     };
 };
 
-export const fetchListTaskSuccess = (data) => {
+export const fetchListTaskSuccess = data => {
     return {
         type: taskConstants.FETCH_TASK_SUCCESS,
         payload: {
-            data: data
+            data
         }
     };
 };
 
-export const fetchListTaskFailed = (error) => {
+export const fetchListTaskFailed = error => {
     return {
         type: taskConstants.FETCH_TASK_FAILED,
         payload: {
-            error: error
+            error
+        }
+    };
+};
+
+export const filterTask = keyword => {
+    return {
+        type: taskConstants.FILTER_TASK,
+        payload: {
+            keyword
+        }
+    };
+};
+
+export const filterTaskSuccess = datas => {
+    return {
+        type: taskConstants.FILTER_TASK_SUCCESS,
+        payload: {
+            datas
         }
     };
 };
@@ -31,14 +49,14 @@ export const fetchListTaskFailed = (error) => {
  * B3: dispatch action fetchListTaskSuccess(data response)
  */
 
-export const fetchListTaskRepuest = () => {
-    return dispatch => {
-        dispatch(fetchListTask());
-        taskApis.getList().then(response => {
-            const {data} = response;
-            dispatch(fetchListTaskSuccess(data));
-        }).catch(error => {
-            dispatch(fetchListTaskFailed(error));
-        });
-    };
-};
+// export const fetchListTaskRepuest = () => {
+//     return dispatch => {
+//         dispatch(fetchListTask());
+//         taskApis.getList().then(response => {
+//             const {data} = response;
+//             dispatch(fetchListTaskSuccess(data));
+//         }).catch(error => {
+//             dispatch(fetchListTaskFailed(error));
+//         });
+//     };
+// };

@@ -13,6 +13,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 listTask: []
             };
+
         case taskConstants.FETCH_TASK_SUCCESS:
             const {data} = action.payload;
 
@@ -20,6 +21,7 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 listTask: data
             };
+
         case taskConstants.FETCH_TASK_FAILED:
             const {error} = action.payload;
             toastError(error);
@@ -27,6 +29,14 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 listTask: []
             };
+
+        case taskConstants.FILTER_TASK_SUCCESS:
+            const {datas} = action.payload;
+            return {
+                ...state,
+                listTask: datas
+            };
+
         default: return state;
     }
 };
