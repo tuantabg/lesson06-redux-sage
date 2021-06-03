@@ -22,11 +22,11 @@ class TaskBoard extends Component {
         };
     };
 
-    // componentDidMount() {
-    //     const { taskActionCreators } = this.props;
-    //     const { fetchListTask } = taskActionCreators;
-    //     fetchListTask();
-    // };
+    componentDidMount() {
+        const { taskActionCreators } = this.props;
+        const { fetchListTask } = taskActionCreators;
+        fetchListTask();
+    };
 
     openForm = () => {
         this.setState({
@@ -72,12 +72,6 @@ class TaskBoard extends Component {
         return result;
     };
 
-    loadData = () => {
-        const { taskActionCreators } = this.props;
-        const { fetchListTask } = taskActionCreators;
-        fetchListTask();
-    };
-
     handleChadle = (event) => {
         const {value} = event.target;
         const { taskActionCreators } = this.props;
@@ -99,10 +93,6 @@ class TaskBoard extends Component {
 
         return (
             <div className={classes.taskBoard}>
-                <Button variant="contained" color="secondary" onClick={this.loadData} style={{margin: 20}}>
-                    Load data
-                </Button>
-
                 <Button variant="contained" color="primary" onClick={this.openForm} style={{margin: 20}}>
                     <AddIcon /> Thêm mới công việc
                 </Button>

@@ -10,11 +10,11 @@ const styles = () => ({
     },
     icon: {
         position: "fixed",
-        marginLeft: "auto",
-        marginRight: "auto",
-        top: "45%",
+        margin: "auto",
+        top: 0,
         left: 0,
         right: 0,
+        bottom: 0,
         width: 50,
     },
 });
