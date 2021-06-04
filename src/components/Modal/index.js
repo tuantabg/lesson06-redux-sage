@@ -10,7 +10,7 @@ import Styles from "./Styles";
 
 class CommonModal extends Component {
     render() {
-        const {classes, open, onClone, component, title, modalActionCreators} = this.props;
+        const {classes, open, component, title, modalActionCreators} = this.props;
         const {hideModal} = modalActionCreators;
 
         return (
@@ -39,7 +39,7 @@ Modal.propTypes= {
 };
 
 const mapStateToProps = (state) => ({
-    onpen: state.modal.showModal,
+    open: state.modal.showModal,
     component: state.modal.component,
     title: state.modal.title
 });

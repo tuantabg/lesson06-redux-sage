@@ -4,7 +4,7 @@ import {bindActionCreators} from "redux";
 import * as taskActions from "../../actions/task";
 import * as modalActions from "../../actions/modal";
 import TaskList from "../../components/TaskList";
-import TaskForm from "../../components/TaskForm";
+import TaskForm from "../TaskForm";
 import SearchBox from "../../components/SearchBox";
 import Button from "@material-ui/core/Button";
 import AddIcon from "@material-ui/icons/Add";
@@ -27,12 +27,6 @@ class TaskBoard extends Component {
         const {taskActionCreators} = this.props;
         const {fetchListTask} = taskActionCreators;
         fetchListTask();
-    };
-
-    handleClose = () => {
-        this.setState({
-            open: false
-        });
     };
 
     openForm = () => {
@@ -68,17 +62,6 @@ class TaskBoard extends Component {
         return result;
     };
 
-    renderForm = () => {
-        let result = null;
-        const {open} = this.state;
-        result = (
-            <TaskForm open={open}
-                      onClone={this.handleClose}
-            />
-        );
-        return result;
-    };
-
     handleChadle = (event) => {
         const {value} = event.target;
         const {taskActionCreators} = this.props;
@@ -105,7 +88,6 @@ class TaskBoard extends Component {
                 </Button>
                 {this.renderSearchBox()}
                 {this.renderBoard()}
-                {/*{this.renderForm()}*/}
             </div>
         );
     };
