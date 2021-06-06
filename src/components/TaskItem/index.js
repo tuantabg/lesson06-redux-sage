@@ -7,14 +7,16 @@ import CardActions from "@material-ui/core/CardActions";
 import Card from "@material-ui/core/Card";
 import Fab from "@material-ui/core/Fab";
 import Icon from "@material-ui/core/Icon";
+import PropTypes from "prop-types";
 import Styles from "./Styles";
 
 class TaskItem extends Component {
     render() {
-        var {classes, task,status, title} = this.props;
+        const {classes, task, status, onClickEdit, onClickDelete} = this.props;
+        const {id, title, description} = task;
 
         return (
-            <Card className={classes.task}>
+            <Card key={id} className={classes.task}>
                 <CardContent>
                     <Grid container justify="space-between">
                         <Grid item md={8}>
@@ -26,15 +28,15 @@ class TaskItem extends Component {
                             {status.label}
                         </Grid>
                     </Grid>
-                    <p>{task.description}</p>
+                    <p>{description}</p>
                 </CardContent>
                 <CardActions className={classes.cardActions}>
-                    <Fab className={classes.fab} color="primary" aria-label="EDIT" size="small">
+                    <Fab className={classes.fab} color="primary" aria-label="EDIT" size="small" onClick={onClickEdit}>
                         <Icon fontSize="small">
                             edit_icon
                         </Icon>
                     </Fab>
-                    <Fab className={classes.fab} color="secondary" aria-label="DELETE" size="small">
+                    <Fab className={classes.fab} color="secondary" aria-label="DELETE" size="small" onClick={onClickDelete}>
                         <Icon fontSize="small">
                             delete_icon
                         </Icon>
@@ -44,5 +46,13 @@ class TaskItem extends Component {
         );
     }
 }
+
+TaskItem.propTypes = {
+    classes: PropTypes.object,
+    task: PropTypes.object,
+    status: PropTypes.object,
+    onClickEdit: PropTypes.func,
+    onClickDelete: PropTypes.func
+};
 
 export default withStyles(Styles)(TaskItem);

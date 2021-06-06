@@ -1,12 +1,6 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "title": "Read Book",
-      "description": "Learning react.js",
-      "status": 0
-    },
-    {
       "id": 2,
       "title": "Play Game",
       "description": "With my friend",
@@ -17,6 +11,12 @@
       "title": "Play Football",
       "description": "Learning react.js",
       "status": 2
+    },
+    {
+      "title": "Tran Anh Tuan",
+      "description": "Hoc lap trinh js",
+      "status": 0,
+      "id": 6
     }
   ]
 }

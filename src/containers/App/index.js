@@ -4,24 +4,50 @@ import {ThemeProvider} from "@material-ui/core/styles";
 import TaskBoard from "../TaskBoard";
 import theme from "../../commons/Theme";
 import {Provider} from "react-redux";
+import {ToastContainer} from "react-toastify";
+import {BrowserRouter, Switch} from "react-router-dom";
 import configureStore from "../../redux/configureStore";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {ADMIN_ROUTER} from "../../constants";
+import AdminLayoutRouter from "../../commons/Layout/AdminLayoutRouter";
 import GlobalLoading from "../../components/GlobalLoading";
-import CommonModal from "../../components/Modal";
+import Modal from "../../components/Modal";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 
 const store = configureStore();
 
 class App extends Component {
+    renderAdminRouter() {
+        let xhtml = null;
+        xhtml = ADMIN_ROUTER.map(route => {
+            return (
+                <AdminLayoutRouter
+                    key={route.path}
+                    path={route.path}
+                    name={route.name}
+                    exact={route.exact}
+                    component={route.component}
+                />
+            );
+        });
+        return xhtml;
+    }
+
     render() {
         return (
             <Provider store={store}>
-                <ThemeProvider theme={theme}>
-                    <ToastContainer />
-                    <GlobalLoading />
-                    <CommonModal />
-                    <TaskBoard/>
-                </ThemeProvider>
+                <BrowserRouter>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <ToastContainer/>
+                        <GlobalLoading/>
+                        <Modal/>
+                        <Switch>
+                            {this.renderAdminRouter()}
+                        </Switch>
+                    </ThemeProvider>
+                </BrowserRouter>
             </Provider>
         );
     }

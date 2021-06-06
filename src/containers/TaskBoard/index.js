@@ -30,7 +30,9 @@ class TaskBoard extends Component {
     };
 
     openForm = () => {
-        const {modalActionCreators} = this.props;
+        const {modalActionCreators, taskActionCreators} = this.props;
+        const {setTaskEditing} = taskActionCreators;
+        setTaskEditing(null);
         const {
             showModal,
             changeModalTitle,
@@ -38,28 +40,15 @@ class TaskBoard extends Component {
         } = modalActionCreators;
         showModal();
         changeModalTitle("Thêm mới công việc");
-        changeModalContent(<TaskForm />);
+        changeModalContent(<TaskForm/>);
     };
 
-    renderBoard = () => {
-        let result = null;
-        const {classes, listTask} = this.props;
-
-        result = (
-            <Grid className={classes.root} container spacing={3}>
-                {
-                    STATUSES.map((status) => {
-                        const taskFiltered = listTask.filter(task => task.status === status.value);
-                        return <TaskList key={status.value}
-                                         tasks={taskFiltered}
-                                         status={status}
-                        />;
-                    })
-                }
-            </Grid>
+    renderSearchBox = () => {
+        let xhtml = null;
+        xhtml = (
+            <SearchBox handleChadle={this.handleChadle}/>
         );
-
-        return result;
+        return xhtml;
     };
 
     handleChadle = (event) => {
@@ -69,12 +58,79 @@ class TaskBoard extends Component {
         filterTask(value);
     };
 
-    renderSearchBox = () => {
-        let xhtml = null;
-        xhtml = (
-            <SearchBox handleChadle={this.handleChadle}/>
+    handleEditTask = (task) => {
+        const {taskActionCreators, modalActionCreators} = this.props;
+        const {setTaskEditing} = taskActionCreators;
+        setTaskEditing(task);
+        const {
+            showModal,
+            changeModalTitle,
+            changeModalContent
+        } = modalActionCreators;
+        showModal();
+        changeModalTitle("Cập nhập công việc");
+        changeModalContent(<TaskForm/>);
+    };
+
+    showModalDeleteTask = (task) => {
+        const {classes, taskActionCreators, modalActionCreators} = this.props;
+        const {
+            showModal,
+            hideModal,
+            changeModalTitle,
+            changeModalContent
+        } = modalActionCreators;
+        showModal();
+        changeModalTitle("Xóa công việc");
+        changeModalContent(
+            <div className={classes.modalDelete}>
+                <div className={classes.modalComfirmText}>
+                    Bạn chắc chắn muốn xóa {" "}
+                    <span className={classes.modalComfirmTextBold}>{task.title}</span> ?
+                </div>
+                <Box display="flex" flexDirection="row-reverse" m={3}>
+                    <Box ml={1}>
+                        <Button variant="contained" color="primary" onClick={hideModal}>Hủy bỏ</Button>
+                    </Box>
+                    <Box>
+                        <Button variant="contained" color="secondary"
+                                onClick={() => this.handleDeleteTask(task)}>Xóa</Button>
+                    </Box>
+                </Box>
+            </div>
         );
-        return xhtml;
+    };
+
+    handleDeleteTask = (task) => {
+        const {id} = task;
+        const {taskActionCreators} = this.props;
+        const {deleteTask} = taskActionCreators;
+        deleteTask(id);
+    }
+
+    renderBoard = () => {
+        let result = null;
+        const {classes, listTask} = this.props;
+
+        result = (
+            <Grid container className={classes.root} spacing={3}>
+                {
+                    STATUSES.map((status) => {
+                        const taskFiltered = listTask.filter(task => task.status === status.value);
+                        return (
+                            <TaskList key={status.value}
+                                      tasks={taskFiltered}
+                                      status={status}
+                                      onClickEdit={this.handleEditTask}
+                                      onClickDelete={this.showModalDeleteTask}
+                            />
+                        );
+                    })
+                }
+            </Grid>
+        );
+
+        return result;
     };
 
 
@@ -98,6 +154,8 @@ TaskBoard.propType = {
     taskActionCreators: PropTypes.shape({
         fetchListTask: PropTypes.func,
         filterTask: PropTypes.func,
+        setTaskEditing: PropTypes.func,
+        deleteTask: PropTypes.func,
     }),
     modalActionCreators: PropTypes.shape({
         showModal: PropTypes.func,
